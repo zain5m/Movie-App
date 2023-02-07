@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:move/core/blocApp/app_bloc.dart';
+import 'package:move/core/utils/global/color_constance.dart';
+import 'package:move/core/utils/size_config.dart';
+import 'package:move/layout/components/item_navigation_bar_component.dart';
 import 'package:move/main.dart';
 
 class LayoutApp extends StatelessWidget {
@@ -8,6 +11,7 @@ class LayoutApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       body: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
@@ -16,23 +20,23 @@ class LayoutApp extends StatelessWidget {
       ),
       bottomNavigationBar: Material(
         elevation: 8,
-        color: Color(0XFF1E1E29),
+        color: ColorConstance.colorbottomNavBar,
         child: Align(
           alignment: Alignment.bottomCenter,
           heightFactor: 1,
           child: SizedBox(
-            width: MediaQuery.of(context).size.height,
+            width: SizeConfig.screenHeight,
             child: ConstrainedBox(
               constraints: BoxConstraints(
                   minHeight: kBottomNavigationBarHeight +
-                      MediaQuery.of(context).padding.bottom),
+                      SizeConfig.mediaQueryData.padding.bottom),
               child: Material(
-                // Splashes.
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 type: MaterialType.transparency,
                 child: Padding(
                   padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).padding.bottom),
+                    bottom: SizeConfig.mediaQueryData.padding.bottom,
+                  ),
                   child: MediaQuery.removePadding(
                     context: context,
                     removeBottom: true,

@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:move/core/blocApp/app_bloc.dart';
+import 'package:move/core/utils/size_config.dart';
 import 'package:move/movies/data/datasource/movie_remote-data_scource.dart';
 import 'package:move/movies/data/repository/movies_repository.dart';
 import 'package:move/movies/domain/repository/base_movies_repository.dart';
@@ -28,6 +29,7 @@ final sl = GetIt.instance;
 class ServicesLocator {
   void init() {
 //! BLoc
+
     sl.registerFactory(() => MoviesBloc(sl(), sl(), sl()));
     //
     sl.registerFactory(() => MovieDetailsBloc(sl(), sl()));
