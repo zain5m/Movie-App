@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:move/core/services/services_locator.dart';
 import 'package:move/core/utils/app_string.dart';
 import 'package:move/core/utils/size_config.dart';
@@ -12,8 +11,8 @@ import 'package:move/movies/presentation/components/see_more_top_rated_component
 import 'package:move/movies/presentation/components/top_rated_components.dart';
 import 'package:move/movies/presentation/controller/bloc_movies/movies_bloc.dart';
 import 'package:move/movies/presentation/controller/bloc_movies/movies_event.dart';
-import 'package:move/movies/presentation/controller/bloc_see_more/see_more_bloc.dart';
-import 'package:move/movies/presentation/screen/see_more_screen.dart';
+import 'package:move/movies/presentation/controller/bloc_see_more_movies/see_more_movies_bloc.dart';
+import 'package:move/movies/presentation/screen/see_more_movies_screen.dart';
 
 class MainMoviesScreen extends StatelessWidget {
   const MainMoviesScreen({Key? key}) : super(key: key);
@@ -35,8 +34,8 @@ class MainMoviesScreen extends StatelessWidget {
               const NowPlayingComponest(),
               BottomSeeMore(
                 text: AppString.popular,
-                nextPage: SeeMoreScreen(
-                  event: SeeMorePopular(),
+                nextPage: SeeMoreMoviesScreen(
+                  event: SeeMoreMoviesPopular(),
                   screen: const SeeMorePopulerComponents(),
                   textAppBar: AppString.popular,
                 ),
@@ -44,8 +43,8 @@ class MainMoviesScreen extends StatelessWidget {
               PopulerComponents(),
               BottomSeeMore(
                 text: AppString.topRated,
-                nextPage: SeeMoreScreen(
-                  event: SeeMoreTopRated(),
+                nextPage: SeeMoreMoviesScreen(
+                  event: SeeMoreMoviesTopRated(),
                   screen: const SeeMoreTopRatedComponents(),
                   textAppBar: AppString.topRated,
                 ),

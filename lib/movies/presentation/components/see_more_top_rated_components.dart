@@ -1,12 +1,10 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:move/core/utils/enums.dart';
 import 'package:move/movies/presentation/components/shared/bottom_loader%20_components.dart';
 import 'package:move/movies/presentation/components/shared/movies_list_item.dart';
-import 'package:move/movies/presentation/controller/bloc_see_more/see_more_bloc.dart';
-import 'package:move/movies/presentation/screen/see_more_screen.dart';
+import 'package:move/movies/presentation/controller/bloc_see_more_movies/see_more_movies_bloc.dart';
 
 class SeeMoreTopRatedComponents extends StatefulWidget {
   const SeeMoreTopRatedComponents({
@@ -35,7 +33,8 @@ class SeeMoreTopRatedComponentsState extends State<SeeMoreTopRatedComponents> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<SeeMoreBloc>().add(SeeMoreTopRated());
+    if (_isBottom)
+      context.read<SeeMoreMoviesBloc>().add(SeeMoreMoviesTopRated());
   }
 
   bool get _isBottom {
@@ -47,7 +46,7 @@ class SeeMoreTopRatedComponentsState extends State<SeeMoreTopRatedComponents> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SeeMoreBloc, SeeMoreState>(
+    return BlocBuilder<SeeMoreMoviesBloc, SeeMoreMoviesState>(
       buildWhen: (previous, current) => previous.topRateds != current.topRateds,
       builder: (context, state) {
         switch (state.statusTopRated) {

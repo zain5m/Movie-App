@@ -11,7 +11,7 @@ import 'package:move/movies/domain/usecases/get_recommendation_usecase.dart';
 import 'package:move/movies/domain/usecases/get_top_rated_movies_usecase.dart';
 import 'package:move/movies/presentation/controller/bloc_movies/movies_bloc.dart';
 import 'package:move/movies/presentation/controller/bloc_movies_details/movie_details_bloc.dart';
-import 'package:move/movies/presentation/controller/bloc_see_more/see_more_bloc.dart';
+import 'package:move/movies/presentation/controller/bloc_see_more_movies/see_more_movies_bloc.dart';
 import 'package:move/tv/data/datasource/tv_remote_data_source.dart';
 import 'package:move/tv/data/repository/tv_repository.dart';
 import 'package:move/tv/domain/repository/base_tv_repository.dart';
@@ -21,8 +21,10 @@ import 'package:move/tv/domain/usecases/get_popular_tv.dart';
 import 'package:move/tv/domain/usecases/get_recommendation_tv_usecase.dart';
 import 'package:move/tv/domain/usecases/get_top_rated_tv.dart';
 import 'package:move/tv/domain/usecases/get_tv_details_usecase.dart';
-import 'package:move/tv/presentation/controller/bloc/tv_bloc.dart';
-import 'package:move/tv/presentation/controller/details_bloc/details_bloc.dart';
+import 'package:move/tv/presentation/controller/bloc_see_more_tv/see_more_tv_bloc.dart';
+
+import 'package:move/tv/presentation/controller/bloc_tv/tv_bloc.dart';
+import 'package:move/tv/presentation/controller/bloc_tv_details/tv_details_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -41,8 +43,8 @@ class ServicesLocator {
     //
     sl.registerFactory(() => AppBloc());
     //
-    sl.registerFactory(() => SeeMoreBloc(sl(), sl()));
-
+    sl.registerFactory(() => SeeMoreMoviesBloc(sl(), sl()));
+    sl.registerFactory(() => SeeMoreTvBloc(sl(), sl()));
 //! UseCasre
     sl.registerLazySingleton(() => GetNowPlayingMoviesUseCase(sl()));
     sl.registerLazySingleton(() => GetPopularMoviesUseCase(sl()));

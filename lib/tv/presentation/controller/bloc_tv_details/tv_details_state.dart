@@ -1,4 +1,4 @@
-part of 'details_bloc.dart';
+part of 'tv_details_bloc.dart';
 
 class TvDetailsState extends Equatable {
   final String? drop;

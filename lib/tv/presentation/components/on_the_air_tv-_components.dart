@@ -1,12 +1,13 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:move/core/network/api_constance.dart';
 import 'package:move/core/utils/enums.dart';
-import 'package:move/tv/presentation/controller/bloc/tv_bloc.dart';
+import 'package:move/core/utils/global/components.dart';
+import 'package:move/core/utils/size_config.dart';
+import 'package:move/tv/presentation/controller/bloc_tv/tv_bloc.dart';
 import 'package:move/tv/presentation/screen/tv_details_screen.dart';
 
 class OnTheAirTvComponents extends StatelessWidget {
@@ -16,14 +17,18 @@ class OnTheAirTvComponents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return BlocBuilder<TvBloc, TvState>(
       buildWhen: (previous, current) =>
           previous.onTheAirState != current.onTheAirState,
       builder: (context, state) {
         switch (state.onTheAirState) {
           case RequestState.loading:
-            return const Center(
-              child: CircularProgressIndicator(),
+            return SizedBox(
+              height: getProportionateScreenHeight(400),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
             );
 
           case RequestState.loaded:
@@ -31,9 +36,9 @@ class OnTheAirTvComponents extends StatelessWidget {
               duration: Duration(milliseconds: 500),
               child: CarouselSlider(
                 options: CarouselOptions(
-                  height: 400,
-                  onPageChanged: (index, reason) {},
+                  height: getProportionateScreenHeight(400),
                   viewportFraction: 1.0,
+                  autoPlay: true,
                 ),
                 items: state.onTheAirTv.map(
                   (item) {
@@ -73,15 +78,13 @@ class OnTheAirTvComponents extends StatelessWidget {
                             blendMode: BlendMode.dstIn,
                             child: item.backdropPath != null
                                 ? CachedNetworkImage(
-                                    height: 560.0,
+                                    height: getProportionateScreenHeight(560),
                                     imageUrl: ApiConstance.imageUrl(
                                         item.backdropPath!),
                                     fit: BoxFit.cover,
                                   )
-                                : Image.asset(
-                                    'assets/images/not_found.png',
-                                    height: 560.0,
-                                    fit: BoxFit.cover,
+                                : nullImage(
+                                    height: getProportionateScreenHeight(560),
                                   ),
                           ),
                           Align(
@@ -90,7 +93,9 @@ class OnTheAirTvComponents extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 16.0),
+                                  padding: EdgeInsets.only(
+                                      bottom:
+                                          getProportionateScreenHeight(16.0)),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -100,12 +105,13 @@ class OnTheAirTvComponents extends StatelessWidget {
                                         size: 16,
                                       ),
                                       SizedBox(
-                                        width: 4,
+                                        width: getProportionateScreenWidth(4),
                                       ),
                                       Text(
                                         "ON THE AIR".toUpperCase(),
-                                        style: const TextStyle(
-                                          fontSize: 16.0,
+                                        style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.screentext * 16.0,
                                           color: Colors.white,
                                         ),
                                       ),
@@ -117,8 +123,8 @@ class OnTheAirTvComponents extends StatelessWidget {
                                   child: Text(
                                     item.name,
                                     textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      fontSize: 24,
+                                    style: TextStyle(
+                                      fontSize: SizeConfig.screentext * 24,
                                       color: Colors.white,
                                     ),
                                   ),

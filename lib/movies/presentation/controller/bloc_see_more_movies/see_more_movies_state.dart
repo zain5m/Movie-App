@@ -1,6 +1,6 @@
-part of 'see_more_bloc.dart';
+part of 'see_more_movies_bloc.dart';
 
-class SeeMoreState extends Equatable {
+class SeeMoreMoviesState extends Equatable {
   final RequestState statusPopular;
   final String messagePopular;
   final List<Movie> populars;
@@ -12,7 +12,7 @@ class SeeMoreState extends Equatable {
   final bool hasReachedMax;
   final int page;
 
-  const SeeMoreState({
+  const SeeMoreMoviesState({
     this.statusPopular = RequestState.loading,
     this.messagePopular = "",
     this.populars = const <Movie>[],
@@ -24,7 +24,7 @@ class SeeMoreState extends Equatable {
     this.hasReachedMax = false,
     this.page = 1,
   });
-  SeeMoreState copyWith({
+  SeeMoreMoviesState copyWith({
     RequestState? statusPopular,
     List<Movie>? populars,
     String? messagePopular,
@@ -36,7 +36,7 @@ class SeeMoreState extends Equatable {
     bool? hasReachedMax,
     int? page,
   }) {
-    return SeeMoreState(
+    return SeeMoreMoviesState(
       statusPopular: statusPopular ?? this.statusPopular,
       populars: populars ?? this.populars,
       messagePopular: messagePopular ?? this.messagePopular,
@@ -56,6 +56,9 @@ class SeeMoreState extends Equatable {
         statusPopular,
         messagePopular,
         populars,
+        statusTopRated,
+        topRateds,
+        messageTopRated,
         hasReachedMax,
         page,
       ];

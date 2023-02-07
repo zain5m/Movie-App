@@ -1,20 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:move/core/network/api_constance.dart';
 import 'package:move/core/utils/global/components.dart';
 import 'package:move/core/utils/size_config.dart';
-import 'package:move/movies/domain/entities/movie.dart';
+import 'package:move/tv/domain/entities/tv.dart';
 import 'package:shimmer/shimmer.dart';
 
-class MoviesListItem extends StatelessWidget {
-  const MoviesListItem({
+class MoviesListItemTv extends StatelessWidget {
+  const MoviesListItemTv({
     super.key,
     required this.movie,
   });
 
-  final Movie movie;
+  final Tv movie;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +62,7 @@ class MoviesListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    movie.title,
+                    movie.name,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: GoogleFonts.poppins(
@@ -74,23 +73,23 @@ class MoviesListItem extends StatelessWidget {
                   SizedBox(height: getProportionateScreenHeight(5)),
                   Row(
                     children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: getProportionateScreenHeight(2),
-                          horizontal: getProportionateScreenWidth(8.0),
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: Text(
-                          movie.releaseDate.split('-')[0],
-                          style: const TextStyle(
-                            // fontSize: 16.0,
-                            letterSpacing: 1,
-                          ),
-                        ),
-                      ),
+                      // Container(
+                      //   padding: EdgeInsets.symmetric(
+                      //     vertical: getProportionateScreenHeight(2),
+                      //     horizontal: getProportionateScreenWidth(8.0),
+                      //   ),
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.red,
+                      //     borderRadius: BorderRadius.circular(4.0),
+                      //   ),
+                      //   child: Text(
+                      //     movie.releaseDate.split('-')[0],
+                      //     style: const TextStyle(
+                      //       // fontSize: 16.0,
+                      //       letterSpacing: 1,
+                      //     ),
+                      //   ),
+                      // ),
                       SizedBox(width: getProportionateScreenWidth(16)),
                       Row(
                         children: [

@@ -10,8 +10,8 @@ import 'package:move/tv/domain/usecases/get_episodes_tv_usecase.dart';
 import 'package:move/tv/domain/usecases/get_recommendation_tv_usecase.dart';
 import 'package:move/tv/domain/usecases/get_tv_details_usecase.dart';
 
-part 'details_event.dart';
-part 'details_state.dart';
+part 'tv_details_event.dart';
+part 'tv_details_state.dart';
 
 class TvDetailsBloc extends Bloc<TvDetailsEvent, TvDetailsState> {
   final GetTvDetailsUseCase _getTvDetailsUseCase;
