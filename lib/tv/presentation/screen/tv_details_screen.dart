@@ -8,11 +8,13 @@ import 'package:move/core/network/api_constance.dart';
 import 'package:move/core/services/services_locator.dart';
 import 'package:move/core/utils/app_string.dart';
 import 'package:move/core/utils/enums.dart';
+import 'package:move/core/utils/global/components.dart';
+import 'package:move/core/utils/size_config.dart';
 import 'package:move/movies/domain/entities/genres.dart';
 
 import 'package:move/tv/domain/entities/seasons.dart';
 import 'package:move/tv/domain/entities/tv_episodes.dart';
-import 'package:move/tv/presentation/controller/details_bloc/details_bloc.dart';
+import 'package:move/tv/presentation/controller/bloc_tv_details/tv_details_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
 class TvDetailScreen extends StatelessWidget {
@@ -40,6 +42,7 @@ class MovieDetailContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return BlocBuilder<TvDetailsBloc, TvDetailsState>(
       buildWhen: (previous, current) =>
           previous.detailsState != current.detailsState,
@@ -57,7 +60,7 @@ class MovieDetailContent extends StatelessWidget {
                   return [
                     SliverAppBar(
                       pinned: true,
-                      expandedHeight: 250.0,
+                      expandedHeight: getProportionateScreenHeight(250),
                       flexibleSpace: FlexibleSpaceBar(
                         background: FadeIn(
                           duration: const Duration(milliseconds: 500),
@@ -81,15 +84,13 @@ class MovieDetailContent extends StatelessWidget {
                             blendMode: BlendMode.dstIn,
                             child: state.details!.backdropPath != null
                                 ? CachedNetworkImage(
-                                    width: MediaQuery.of(context).size.width,
+                                    width: SizeConfig.screenWidth,
                                     imageUrl: ApiConstance.imageUrl(
                                         state.details!.backdropPath!),
                                     fit: BoxFit.cover,
                                   )
-                                : Image.asset(
-                                    'assets/images/not_found.png',
-                                    width: MediaQuery.of(context).size.width,
-                                    fit: BoxFit.cover,
+                                : nullImage(
+                                    width: SizeConfig.screenWidth,
                                   ),
                           ),
                         ),
@@ -100,25 +101,27 @@ class MovieDetailContent extends StatelessWidget {
                         from: 20,
                         duration: const Duration(milliseconds: 500),
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding:
+                              EdgeInsets.all(getProportionateScreenHeight(16)),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 state.details!.name,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 23,
+                                  fontSize: SizeConfig.screentext * 23,
                                   fontWeight: FontWeight.w700,
-                                  letterSpacing: 1.2,
+                                  letterSpacing: SizeConfig.screentext * 1.2,
                                 ),
                               ),
-                              const SizedBox(height: 8.0),
+                              SizedBox(height: getProportionateScreenHeight(8)),
                               Row(
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 2.0,
-                                      horizontal: 8.0,
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: getProportionateScreenHeight(2),
+                                      horizontal:
+                                          getProportionateScreenWidth(8),
                                     ),
                                     decoration: BoxDecoration(
                                       color: Colors.grey[800],
@@ -126,13 +129,14 @@ class MovieDetailContent extends StatelessWidget {
                                     ),
                                     child: Text(
                                       state.details!.firstAirDate.split('-')[0],
-                                      style: const TextStyle(
-                                        fontSize: 16.0,
+                                      style: TextStyle(
+                                        fontSize: SizeConfig.screentext * 16.0,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(width: 16.0),
+                                  SizedBox(
+                                      width: getProportionateScreenWidth(16)),
                                   Row(
                                     children: [
                                       const Icon(
@@ -140,27 +144,35 @@ class MovieDetailContent extends StatelessWidget {
                                         color: Colors.amber,
                                         size: 20.0,
                                       ),
-                                      const SizedBox(width: 4.0),
+                                      SizedBox(
+                                          width:
+                                              getProportionateScreenWidth(4)),
                                       Text(
                                         (state.details!.voteAverage / 2)
                                             .toStringAsFixed(1),
-                                        style: const TextStyle(
-                                          fontSize: 16.0,
+                                        style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.screentext * 16.0,
                                           fontWeight: FontWeight.w500,
-                                          letterSpacing: 1.2,
+                                          letterSpacing:
+                                              SizeConfig.screentext * 1.2,
                                         ),
                                       ),
-                                      const SizedBox(width: 4.0),
+                                      SizedBox(
+                                          width:
+                                              getProportionateScreenWidth(4)),
                                     ],
                                   ),
-                                  const SizedBox(width: 16.0),
+                                  SizedBox(
+                                      width: getProportionateScreenWidth(16)),
                                   state.details!.episodeRunTime.isNotEmpty
                                       ? Text(
                                           _showDuration(
                                               state.details!.episodeRunTime[0]),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: Colors.white70,
-                                            fontSize: 16.0,
+                                            fontSize:
+                                                SizeConfig.screentext * 16.0,
                                             fontWeight: FontWeight.w500,
                                             letterSpacing: 1.2,
                                           ),
@@ -168,23 +180,24 @@ class MovieDetailContent extends StatelessWidget {
                                       : Container(),
                                 ],
                               ),
-                              const SizedBox(height: 20.0),
+                              SizedBox(
+                                  height: getProportionateScreenHeight(20)),
                               Text(
                                 state.details!.overview,
-                                style: const TextStyle(
-                                  fontSize: 14.0,
+                                style: TextStyle(
+                                  fontSize: SizeConfig.screentext * 14.0,
                                   fontWeight: FontWeight.w400,
-                                  letterSpacing: 1.2,
+                                  letterSpacing: SizeConfig.screentext * 1.2,
                                 ),
                               ),
-                              const SizedBox(height: 8.0),
+                              SizedBox(height: getProportionateScreenHeight(8)),
                               Text(
                                 '${AppString.genres}: ${_showGenres(state.details!.genres)}',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.white70,
-                                  fontSize: 12.0,
+                                  fontSize: SizeConfig.screentext * 12.0,
                                   fontWeight: FontWeight.w500,
-                                  letterSpacing: 1.2,
+                                  letterSpacing: SizeConfig.screentext * 1.2,
                                 ),
                               ),
                             ],
@@ -210,7 +223,7 @@ class MovieDetailContent extends StatelessWidget {
                             insets: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 45.0),
                             borderSide: BorderSide(
                               color: Color(0XFFFF5252),
-                              width: 2,
+                              width: getProportionateScreenWidth(2),
                             ),
                           ),
                           tabs: [
@@ -218,7 +231,7 @@ class MovieDetailContent extends StatelessWidget {
                               child: Text(
                                 AppString.episodes.toUpperCase(),
                                 style: TextStyle(
-                                  letterSpacing: 1.2,
+                                  letterSpacing: SizeConfig.screentext * 1.2,
                                 ),
                               ),
                             ),
@@ -226,7 +239,7 @@ class MovieDetailContent extends StatelessWidget {
                               child: Text(
                                 AppString.moreLikeThis.toUpperCase(),
                                 style: TextStyle(
-                                  letterSpacing: 1.2,
+                                  letterSpacing: SizeConfig.screentext * 1.2,
                                 ),
                               ),
                             ),
@@ -302,14 +315,16 @@ class MovieDetailContent extends StatelessWidget {
           case RequestState.loaded:
             return Scaffold(
               body: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                padding: EdgeInsets.symmetric(
+                    horizontal: getProportionateScreenWidth(15),
+                    vertical: getProportionateScreenHeight(8)),
                 child: ListView(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 15),
+                      padding: EdgeInsets.only(
+                          bottom: getProportionateScreenHeight(15)),
                       child: SizedBox(
-                        height: 50,
+                        height: getProportionateScreenHeight(50),
                         child: DropdownButtonFormField<String>(
                           decoration: InputDecoration(
                             filled: true,
@@ -328,8 +343,8 @@ class MovieDetailContent extends StatelessWidget {
                                 value: state.details!.seasons[index].name,
                                 child: Text(
                                   state.details!.seasons[index].name,
-                                  style: const TextStyle(
-                                    letterSpacing: 1.4,
+                                  style: TextStyle(
+                                    letterSpacing: SizeConfig.screentext * 1.4,
                                   ),
                                 ),
                               );
@@ -354,7 +369,7 @@ class MovieDetailContent extends StatelessWidget {
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       separatorBuilder: (context, index) =>
-                          SizedBox(height: 15),
+                          SizedBox(height: getProportionateScreenHeight(15)),
                       itemBuilder: (context, index) {
                         final episodes = state.episodes[index];
                         String formattedDate = DateFormat('MMM dd,yyyy')
@@ -371,8 +386,12 @@ class MovieDetailContent extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(10),
                                       child: episodes.stillPath != null
                                           ? CachedNetworkImage(
-                                              width: 150,
-                                              height: 90.0,
+                                              width:
+                                                  getProportionateScreenWidth(
+                                                      150),
+                                              height:
+                                                  getProportionateScreenHeight(
+                                                      90),
                                               imageUrl: ApiConstance.imageUrl(
                                                   episodes.stillPath!),
                                               placeholder: (context, url) =>
@@ -381,8 +400,12 @@ class MovieDetailContent extends StatelessWidget {
                                                 highlightColor:
                                                     Colors.grey[800]!,
                                                 child: Container(
-                                                  height: 10.0,
-                                                  width: 10.0,
+                                                  height:
+                                                      getProportionateScreenHeight(
+                                                          10),
+                                                  width:
+                                                      getProportionateScreenWidth(
+                                                          10),
                                                   decoration: BoxDecoration(
                                                     color: Colors.black,
                                                     borderRadius:
@@ -396,11 +419,13 @@ class MovieDetailContent extends StatelessWidget {
                                                       const Icon(Icons.error),
                                               fit: BoxFit.cover,
                                             )
-                                          : Image.asset(
-                                              'assets/images/not_found.png',
-                                              width: 150,
-                                              height: 90.0,
-                                              fit: BoxFit.cover,
+                                          : nullImage(
+                                              height:
+                                                  getProportionateScreenHeight(
+                                                      10),
+                                              width:
+                                                  getProportionateScreenWidth(
+                                                      10),
                                             ),
                                     ),
                                   ),
@@ -417,13 +442,17 @@ class MovieDetailContent extends StatelessWidget {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      SizedBox(height: 5),
+                                      SizedBox(
+                                          height:
+                                              getProportionateScreenHeight(5)),
                                       Text(
                                         formattedDate,
                                         style: TextStyle(
-                                          letterSpacing: 1.2,
+                                          letterSpacing:
+                                              SizeConfig.screentext * 1.2,
                                           color: Colors.white70,
-                                          fontSize: 12.0,
+                                          fontSize:
+                                              SizeConfig.screentext * 12.0,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -432,13 +461,13 @@ class MovieDetailContent extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10)),
                             Text(
                               episodes.overview,
                               style: TextStyle(
-                                letterSpacing: 1.2,
+                                letterSpacing: SizeConfig.screentext * 1.2,
                                 color: Colors.white70,
-                                fontSize: 12.0,
+                                fontSize: SizeConfig.screentext * 12.0,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -500,8 +529,8 @@ class MovieDetailContent extends StatelessWidget {
                                     baseColor: Colors.grey[850]!,
                                     highlightColor: Colors.grey[800]!,
                                     child: Container(
-                                      height: 170.0,
-                                      width: 120.0,
+                                      height: getProportionateScreenHeight(170),
+                                      width: getProportionateScreenWidth(120),
                                       decoration: BoxDecoration(
                                         color: Colors.black,
                                         borderRadius:
@@ -511,14 +540,14 @@ class MovieDetailContent extends StatelessWidget {
                                   ),
                                   errorWidget: (context, url, error) =>
                                       const Icon(Icons.error),
-                                  height: 180.0,
+                                  height: getProportionateScreenHeight(180),
                                   fit: BoxFit.cover,
                                 )
-                              : Image.asset(
-                                  'assets/images/not_found.png',
-                                  height: 180.0,
-                                  fit: BoxFit.cover,
+                              : nullImage(
+                                  height: getProportionateScreenHeight(180),
+                                  width: getProportionateScreenWidth(120),
                                 ),
+
                           // Text(
                           //   recommendation.title,
                           //   style: TextStyle(
@@ -540,9 +569,9 @@ class MovieDetailContent extends StatelessWidget {
                   );
                 },
                 itemCount: state.recommendation.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  mainAxisSpacing: 8.0,
-                  crossAxisSpacing: 8.0,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: getProportionateScreenHeight(8),
+                  crossAxisSpacing: getProportionateScreenWidth(8),
                   childAspectRatio: 0.7,
                   crossAxisCount: 3,
                 ),

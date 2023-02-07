@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:move/core/utils/enums.dart';
 import 'package:move/movies/presentation/components/shared/bottom_loader%20_components.dart';
-import 'package:move/movies/presentation/components/shared/movies_list_item.dart';
-import 'package:move/movies/presentation/controller/bloc_see_more_movies/see_more_movies_bloc.dart';
+import 'package:move/tv/domain/entities/tv.dart';
+import 'package:move/tv/presentation/components/movies_list_item_tv.dart';
+import 'package:move/tv/presentation/controller/bloc_see_more_tv/see_more_tv_bloc.dart';
 
-class SeeMorePopulerComponents extends StatefulWidget {
-  const SeeMorePopulerComponents({Key? key}) : super(key: key);
+class SeeMorePopulerTvComponents extends StatefulWidget {
+  const SeeMorePopulerTvComponents({Key? key}) : super(key: key);
   @override
-  State<SeeMorePopulerComponents> createState() => SeeMorPopuleScreenState();
+  State<SeeMorePopulerTvComponents> createState() => SeeMorPopuleScreenState();
 }
 
-class SeeMorPopuleScreenState extends State<SeeMorePopulerComponents> {
+class SeeMorPopuleScreenState extends State<SeeMorePopulerTvComponents> {
   final _scrollController = ScrollController();
 
   @override
@@ -30,8 +31,7 @@ class SeeMorPopuleScreenState extends State<SeeMorePopulerComponents> {
   }
 
   void _onScroll() {
-    if (_isBottom)
-      context.read<SeeMoreMoviesBloc>().add(SeeMoreMoviesPopular());
+    if (_isBottom) context.read<SeeMoreTvBloc>().add(SeeMoreTvPopular());
   }
 
   bool get _isBottom {
@@ -43,30 +43,31 @@ class SeeMorPopuleScreenState extends State<SeeMorePopulerComponents> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SeeMoreMoviesBloc, SeeMoreMoviesState>(
-      buildWhen: (previous, current) => previous.populars != current.populars,
+    return BlocBuilder<SeeMoreTvBloc, SeeMoreTvState>(
+      buildWhen: (previous, current) =>
+          previous.popularsTv != current.popularsTv,
       builder: (context, state) {
-        switch (state.statusPopular) {
+        switch (state.statusPopularTv) {
           case RequestState.loading:
             return const Center(child: CircularProgressIndicator());
           case RequestState.loaded:
-            if (state.populars.isEmpty) {
+            if (state.popularsTv.isEmpty) {
               return const Center(child: Text('no posts'));
             }
             return ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                return index >= state.populars.length
+                return index >= state.popularsTv.length
                     ? const BottomLoader()
                     : FadeIn(
                         duration: const Duration(milliseconds: 500),
-                        child: MoviesListItem(
-                          movie: state.populars[index],
+                        child: MoviesListItemTv(
+                          movie: state.popularsTv[index],
                         ),
                       );
               },
               itemCount: state.hasReachedMax
-                  ? state.populars.length
-                  : state.populars.length + 1,
+                  ? state.popularsTv.length
+                  : state.popularsTv.length + 1,
               controller: _scrollController,
             );
           case RequestState.error:

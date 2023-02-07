@@ -109,8 +109,9 @@ class NowPlayingComponest extends StatelessWidget {
                                               getProportionateScreenWidth(4.0)),
                                       Text(
                                         'Now Playing'.toUpperCase(),
-                                        style: const TextStyle(
-                                          fontSize: 16.0,
+                                        style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.screentext * 16.0,
                                           color: Colors.white,
                                         ),
                                       ),
@@ -123,8 +124,8 @@ class NowPlayingComponest extends StatelessWidget {
                                   child: Text(
                                     item.title,
                                     textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      fontSize: 24,
+                                    style: TextStyle(
+                                      fontSize: SizeConfig.screentext * 24,
                                       color: Colors.white,
                                     ),
                                   ),

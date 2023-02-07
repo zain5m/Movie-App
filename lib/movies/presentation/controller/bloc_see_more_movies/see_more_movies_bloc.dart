@@ -1,18 +1,16 @@
 import 'dart:async';
-import 'dart:developer';
 
-import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:move/core/utils/enums.dart';
 import 'package:move/movies/domain/entities/movie.dart';
 import 'package:move/movies/domain/usecases/get_popular_movies_usecase.dart';
 import 'package:move/movies/domain/usecases/get_top_rated_movies_usecase.dart';
 import 'package:stream_transform/stream_transform.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 
-part 'see_more_event.dart';
-part 'see_more_state.dart';
+part 'see_more_movies_event.dart';
+part 'see_more_movies_state.dart';
 
 const throttleDuration = Duration(milliseconds: 100);
 
@@ -22,27 +20,27 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
   };
 }
 
-class SeeMoreBloc extends Bloc<SeeMoreEvent, SeeMoreState> {
+class SeeMoreMoviesBloc extends Bloc<SeeMoreMoviesEvent, SeeMoreMoviesState> {
   final GetPopularMoviesUseCase _getPopularMoviesUseCase;
   final GetTopRatedMoviesUseCase _getTopRatedMoviesUseCase;
 
-  static SeeMoreBloc get(context) => BlocProvider.of(context);
-  SeeMoreBloc(
+  static SeeMoreMoviesBloc get(context) => BlocProvider.of(context);
+  SeeMoreMoviesBloc(
     this._getPopularMoviesUseCase,
     this._getTopRatedMoviesUseCase,
-  ) : super(const SeeMoreState()) {
-    on<SeeMorePopular>(
+  ) : super(const SeeMoreMoviesState()) {
+    on<SeeMoreMoviesPopular>(
       _getPopularSeeMore,
       transformer: throttleDroppable(throttleDuration),
     );
-    on<SeeMoreTopRated>(
+    on<SeeMoreMoviesTopRated>(
       _getTopRatedSeeMore,
       transformer: throttleDroppable(throttleDuration),
     );
   }
 
   FutureOr<void> _getPopularSeeMore(
-      SeeMorePopular event, Emitter<SeeMoreState> emit) async {
+      SeeMoreMoviesPopular event, Emitter<SeeMoreMoviesState> emit) async {
     if (state.hasReachedMax) return;
     final result = await _getPopularMoviesUseCase(
       PopularMoviesParameters(
@@ -52,7 +50,7 @@ class SeeMoreBloc extends Bloc<SeeMoreEvent, SeeMoreState> {
 
     result.fold(
       (l) => emit(
-        SeeMoreState(
+        SeeMoreMoviesState(
           messagePopular: l.message,
           statusPopular: RequestState.error,
         ),
@@ -74,7 +72,7 @@ class SeeMoreBloc extends Bloc<SeeMoreEvent, SeeMoreState> {
   }
 
   FutureOr<void> _getTopRatedSeeMore(
-      SeeMoreTopRated event, Emitter<SeeMoreState> emit) async {
+      SeeMoreMoviesTopRated event, Emitter<SeeMoreMoviesState> emit) async {
     if (state.hasReachedMax) return;
 
     final result = await _getTopRatedMoviesUseCase(
@@ -85,7 +83,7 @@ class SeeMoreBloc extends Bloc<SeeMoreEvent, SeeMoreState> {
 
     result.fold(
       (l) => emit(
-        SeeMoreState(
+        SeeMoreMoviesState(
           messageTopRated: l.message,
           statusTopRated: RequestState.error,
         ),

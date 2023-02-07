@@ -9,15 +9,15 @@ import 'package:move/core/utils/app_string.dart';
 import 'package:move/core/utils/global/components.dart';
 import 'package:move/core/utils/size_config.dart';
 import 'package:move/movies/domain/entities/movie.dart';
-import 'package:move/movies/presentation/controller/bloc_see_more/see_more_bloc.dart';
+import 'package:move/movies/presentation/controller/bloc_see_more_movies/see_more_movies_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../core/utils/enums.dart';
 
-class SeeMoreScreen extends StatelessWidget {
+class SeeMoreMoviesScreen extends StatelessWidget {
   final String textAppBar;
-  final SeeMoreEvent event;
+  final SeeMoreMoviesEvent event;
   final Widget screen;
-  const SeeMoreScreen({
+  const SeeMoreMoviesScreen({
     Key? key,
     required this.event,
     required this.textAppBar,
@@ -26,6 +26,7 @@ class SeeMoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -43,15 +44,15 @@ class SeeMoreScreen extends StatelessWidget {
         title: Text(
           "$textAppBar Movies",
           style: GoogleFonts.poppins(
-            fontSize: 19,
+            fontSize: SizeConfig.screentext * 19,
             fontWeight: FontWeight.w500,
-            letterSpacing: 0.15,
+            letterSpacing: SizeConfig.screentext * 0.15,
             color: Colors.white,
           ),
         ),
       ),
       body: BlocProvider(
-        create: (context) => sl<SeeMoreBloc>()..add(event),
+        create: (context) => sl<SeeMoreMoviesBloc>()..add(event),
         child: screen,
       ),
     );

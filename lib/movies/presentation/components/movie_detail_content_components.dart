@@ -12,6 +12,8 @@ import 'package:move/core/utils/size_config.dart';
 import 'package:move/movies/presentation/controller/bloc_movies_details/movie_details_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'movie_show_recommendations_components.dart';
+
 class MovieDetailContent extends StatelessWidget {
   const MovieDetailContent({Key? key}) : super(key: key);
 
@@ -79,9 +81,9 @@ class MovieDetailContent extends StatelessWidget {
                           Text(
                             state.movieDetails!.title,
                             style: GoogleFonts.poppins(
-                              fontSize: 23,
+                              fontSize: SizeConfig.screentext * 23,
                               fontWeight: FontWeight.w700,
-                              letterSpacing: 1.2,
+                              letterSpacing: SizeConfig.screentext * 1.2,
                             ),
                           ),
                           SizedBox(height: getProportionateScreenHeight(8.0)),
@@ -98,8 +100,8 @@ class MovieDetailContent extends StatelessWidget {
                                 ),
                                 child: Text(
                                   state.movieDetails!.releaseDate.split('-')[0],
-                                  style: const TextStyle(
-                                    fontSize: 16.0,
+                                  style: TextStyle(
+                                    fontSize: SizeConfig.screentext * 16.0,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -117,20 +119,22 @@ class MovieDetailContent extends StatelessWidget {
                                   Text(
                                     (state.movieDetails!.voteAverage / 2)
                                         .toStringAsFixed(1),
-                                    style: const TextStyle(
-                                      fontSize: 16.0,
+                                    style: TextStyle(
+                                      fontSize: SizeConfig.screentext * 16.0,
                                       fontWeight: FontWeight.w500,
-                                      letterSpacing: 1.2,
+                                      letterSpacing:
+                                          SizeConfig.screentext * 1.2,
                                     ),
                                   ),
                                   SizedBox(
                                       width: getProportionateScreenWidth(4)),
                                   Text(
                                     '(${state.movieDetails!.voteAverage})',
-                                    style: const TextStyle(
-                                      fontSize: 1.0,
+                                    style: TextStyle(
+                                      fontSize: SizeConfig.screentext * 1.0,
                                       fontWeight: FontWeight.w500,
-                                      letterSpacing: 1.2,
+                                      letterSpacing:
+                                          SizeConfig.screentext * 1.2,
                                     ),
                                   ),
                                 ],
@@ -139,11 +143,11 @@ class MovieDetailContent extends StatelessWidget {
                               Text(
                                 AppConstance.showDuration(
                                     state.movieDetails!.runtime),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.white70,
-                                  fontSize: 16.0,
+                                  fontSize: SizeConfig.screentext * 16.0,
                                   fontWeight: FontWeight.w500,
-                                  letterSpacing: 1.2,
+                                  letterSpacing: SizeConfig.screentext * 1.2,
                                 ),
                               ),
                             ],
@@ -151,20 +155,20 @@ class MovieDetailContent extends StatelessWidget {
                           SizedBox(height: getProportionateScreenHeight(20)),
                           Text(
                             state.movieDetails!.overview,
-                            style: const TextStyle(
-                              fontSize: 14.0,
+                            style: TextStyle(
+                              fontSize: SizeConfig.screentext * 14.0,
                               fontWeight: FontWeight.w400,
-                              letterSpacing: 1.2,
+                              letterSpacing: SizeConfig.screentext * 1.2,
                             ),
                           ),
                           SizedBox(height: getProportionateScreenHeight(8)),
                           Text(
                             '${AppString.genres}: ${AppConstance.showGenres(state.movieDetails!.genres)}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white70,
-                              fontSize: 12.0,
+                              fontSize: SizeConfig.screentext * 12.0,
                               fontWeight: FontWeight.w500,
-                              letterSpacing: 1.2,
+                              letterSpacing: SizeConfig.screentext * 1.2,
                             ),
                           ),
                         ],
@@ -185,10 +189,10 @@ class MovieDetailContent extends StatelessWidget {
                       duration: const Duration(milliseconds: 500),
                       child: Text(
                         AppString.moreLikeThis.toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 16.0,
+                        style: TextStyle(
+                          fontSize: SizeConfig.screentext * 16.0,
                           fontWeight: FontWeight.w500,
-                          letterSpacing: 1.2,
+                          letterSpacing: SizeConfig.screentext * 1.2,
                         ),
                       ),
                     ),
@@ -202,7 +206,7 @@ class MovieDetailContent extends StatelessWidget {
                     getProportionateScreenWidth(16),
                     getProportionateScreenHeight(24),
                   ),
-                  sliver: _showRecommendations(),
+                  sliver: showRecommendations(),
                 ),
               ],
             );
@@ -211,84 +215,6 @@ class MovieDetailContent extends StatelessWidget {
               child: Text(state.recommendationMessage),
             );
         }
-      },
-    );
-  }
-
-  Widget _showRecommendations() {
-    return BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
-      builder: (context, state) {
-        return SliverGrid(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final recommendation = state.recommendation[index];
-              print(recommendation.backdropPath);
-              return FadeInUp(
-                from: 20,
-                duration: const Duration(milliseconds: 500),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                  child: Stack(
-                    alignment: AlignmentDirectional.bottomCenter,
-                    children: [
-                      recommendation.backdropPath != null
-                          ? CachedNetworkImage(
-                              imageUrl: ApiConstance.imageUrl(
-                                  recommendation.backdropPath!),
-                              placeholder: (context, url) => Shimmer.fromColors(
-                                baseColor: Colors.grey[850]!,
-                                highlightColor: Colors.grey[800]!,
-                                child: Container(
-                                  height: 170.0,
-                                  width: 120.0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                ),
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                              height: 180.0,
-                              fit: BoxFit.cover,
-                            )
-                          : nullImage(
-                              width: getProportionateScreenWidth(120.0),
-                            ),
-                      // Text(
-                      //   recommendation.title,
-                      //   style: TextStyle(
-                      //     foreground: Paint()
-                      //       ..blendMode = BlendMode.dstOut
-                      //       ..style = PaintingStyle.stroke
-                      //       ..color = Colors.white
-                      //       ..strokeWidth = 2
-                      //       ..strokeCap = StrokeCap.butt
-                      //       ..strokeJoin = StrokeJoin.bevel,
-                      //     fontSize: 20.0,
-                      //     fontWeight: FontWeight.w600,
-                      //     letterSpacing: 1.2,
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ),
-              );
-            },
-            childCount: state.recommendation.length,
-          ),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            mainAxisSpacing: 8.0,
-            crossAxisSpacing: 8.0,
-            childAspectRatio: 0.7,
-            crossAxisCount: 3,
-          ),
-        );
-        // case RequestState.error:
-        //   return Center(
-        //     child: Text(state.recommendationMessage),
-        //   );
-        // }
       },
     );
   }

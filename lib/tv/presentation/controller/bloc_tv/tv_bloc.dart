@@ -47,7 +47,11 @@ class TvBloc extends Bloc<TvEvent, TvState> {
 
   FutureOr<void> _getPopularTv(
       GetPopularTvEvent event, Emitter<TvState> emit) async {
-    final result = await _getPopulerTvUsecase(const NoParameters());
+    final result = await _getPopulerTvUsecase(
+      const PopularTvParameters(
+        page: 1,
+      ),
+    );
     result.fold(
       (l) => emit(
         state.copyWith(
@@ -66,7 +70,9 @@ class TvBloc extends Bloc<TvEvent, TvState> {
 
   FutureOr<void> _getTopRatedTv(
       GetTopRatedTvEvent event, Emitter<TvState> emit) async {
-    final result = await _getTopRatedTvUsecase(const NoParameters());
+    final result = await _getTopRatedTvUsecase(const TopRatedTvParameters(
+      page: 1,
+    ));
     result.fold(
       (l) => emit(
         state.copyWith(
