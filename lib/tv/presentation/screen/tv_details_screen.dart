@@ -11,9 +11,6 @@ import 'package:move/core/utils/enums.dart';
 import 'package:move/core/utils/global/components.dart';
 import 'package:move/core/utils/size_config.dart';
 import 'package:move/movies/domain/entities/genres.dart';
-
-import 'package:move/tv/domain/entities/seasons.dart';
-import 'package:move/tv/domain/entities/tv_episodes.dart';
 import 'package:move/tv/presentation/controller/bloc_tv_details/tv_details_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -402,10 +399,10 @@ class MovieDetailContent extends StatelessWidget {
                                                 child: Container(
                                                   height:
                                                       getProportionateScreenHeight(
-                                                          10),
+                                                          150),
                                                   width:
                                                       getProportionateScreenWidth(
-                                                          10),
+                                                          90),
                                                   decoration: BoxDecoration(
                                                     color: Colors.black,
                                                     borderRadius:
@@ -422,10 +419,10 @@ class MovieDetailContent extends StatelessWidget {
                                           : nullImage(
                                               height:
                                                   getProportionateScreenHeight(
-                                                      10),
+                                                      90),
                                               width:
                                                   getProportionateScreenWidth(
-                                                      10),
+                                                      150),
                                             ),
                                     ),
                                   ),
